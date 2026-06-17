@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Exit right away if there are any errors (e.g. yq or another tool isn't installed)
+set -e
+
 # Exit if not running under bash
 if [ -z "$BASH_VERSION" ]; then
     echo "This script must be run with bash" >&2
@@ -14,10 +17,11 @@ mod_name_version="$(echo "${mod_name} (v ${mod_version})" | tr '[:upper:]' '[:lo
 # Detect whether we're using native or Proton
 if [[ -f "/home/$USER/.steam/steam/steamapps/common/Sid Meier's Civilization Beyond Earth/CivBE" ]]; then
     user_directory="/home/${USER}/.local/share/aspyr-media/Sid Meier's Civilization Beyond Earth"
-fi
-
-if [[ -f "/home/$USER/.steam/steam/steamapps/common/Sid Meier's Civilization Beyond Earth/CivilizationBE_DX11.exe" ]]; then
+elif [[ -f "/home/$USER/.steam/steam/steamapps/common/Sid Meier's Civilization Beyond Earth/CivilizationBE_DX11.exe" ]]; then
     user_directory="/home/${USER}/.steam/steam/steamapps/compatdata/65980/pfx/drive_c/users/steamuser/Documents/My Games/Sid Meier's Civilization Beyond Earth"
+else
+    echo "Error: Beyond Earth not found"
+    exit 1
 fi
 
 # Inject the current timestamp into the mod teaser text. This makes it easier to tell if

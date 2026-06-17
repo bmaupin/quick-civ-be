@@ -2,6 +2,9 @@
 
 # This contains all the common build steps needed before packaging or installing the mod
 
+# Exit right away if there are any errors (e.g. yq or another tool isn't installed)
+set -e
+
 # Exit if not running under bash
 if [ -z "$BASH_VERSION" ]; then
     echo "This script must be run with bash" >&2
